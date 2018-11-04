@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import model.Department;
@@ -33,24 +34,13 @@ public class EmployeeCtl implements ActionListener, MouseListener {
     private List<Department> departments = new ArrayList();
     private EmployeeDAO employeeDAO;
     private EmployeePan employeePan;
-    private Employee employee;
     private List<Employee> employees = new ArrayList();
     ObjectContainer container = null;
     ObjectContainer container2 = null;
-    private static EmployeeCtl singleton;
 
-    public static EmployeeCtl getInstance(MainFrm mainFrm) {
-        singleton = null;
-        if (singleton == null) {
-            singleton = new EmployeeCtl(mainFrm);
-        }
-        return singleton;
-    }
-
-    private EmployeeCtl(MainFrm mainFrm) {
-        jobDAO = JobDAO.getInstance();
-        employeeDAO = EmployeeDAO.getInstance();
-        employee = new Employee();
+    public EmployeeCtl(MainFrm mainFrm) {
+        jobDAO = new JobDAO();
+        employeeDAO = new EmployeeDAO();
 
         container2 = jobDAO.loadConfiguration();
         container = employeeDAO.loadConfiguration();
@@ -72,7 +62,7 @@ public class EmployeeCtl implements ActionListener, MouseListener {
 
         employees = employeeDAO.readAll(container);
 
-        employeePan = EmployeePan.getInstance(jobs, employees, departments);
+        employeePan = new EmployeePan(jobs, employees, departments);
 
         mainFrm.getContainer().setVisible(false);
         mainFrm.getContainer().removeAll();
@@ -152,13 +142,14 @@ public class EmployeeCtl implements ActionListener, MouseListener {
         employeePan.getTxtLname().setText("");
         employeePan.getCboJob().setSelectedIndex(0);
         employeePan.getCboMgr().setSelectedIndex(0);
-        employeePan.getCalHiredate().setSelectedIndex(0);
+        employeePan.getCalHiredate().setDate(new Date());
         employeePan.getTxtSal().setText("");
         employeePan.getTxtComm().setText("");
         employeePan.getCboDeptno().setSelectedIndex(0);
     }
 
     private void save() {
+        Employee employee = new Employee();
         if (container == null) {
             container = employeeDAO.loadConfiguration();
         }
@@ -228,6 +219,7 @@ public class EmployeeCtl implements ActionListener, MouseListener {
     }
 
     private void delete() {
+        Employee employee = new Employee();
         if (!employeePan.getTxtEmpno().getText().isEmpty()) {
             if (container == null) {
                 container = employeeDAO.loadConfiguration();
@@ -248,6 +240,7 @@ public class EmployeeCtl implements ActionListener, MouseListener {
     }
 
     private void update() {
+        Employee employee = new Employee();
         if (!employeePan.getTxtEmpno().getText().isEmpty()) {
             if (container == null) {
                 container = employeeDAO.loadConfiguration();
@@ -259,6 +252,7 @@ public class EmployeeCtl implements ActionListener, MouseListener {
             employees = employeeDAO.readAll(container);
             jobs = jobDAO.readAll(container2);
 
+            employee.setEmpno(Integer.parseInt(employeePan.getTxtEmpno().getText()));
             employee.setEname(employeePan.getTxtEname().getText());
             employee.setLname(employeePan.getTxtLname().getText());
             for (Job j : jobs) {
@@ -335,6 +329,7 @@ public class EmployeeCtl implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Employee employee = new Employee();
         if (container == null) {
             container = employeeDAO.loadConfiguration();
         }

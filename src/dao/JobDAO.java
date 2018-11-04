@@ -5,10 +5,8 @@
  */
 package dao;
 
-import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
-import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.query.Query;
 import java.util.List;
 import model.Job;
@@ -17,29 +15,10 @@ import model.Job;
  *
  * DAO de puestos
  */
-public class JobDAO {
+public class JobDAO extends DAO {
 
-    private static JobDAO singleton;
-
-    public static JobDAO getInstance() {
-        if (singleton == null) {
-            singleton = new JobDAO();
-        }
-        return singleton;
-    }
-
-    private JobDAO() {
-    }
-
-    public ObjectContainer loadConfiguration() {
-        EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
-        config.common().objectClass(Job.class).cascadeOnDelete(true);
-        ObjectContainer container = Db4oEmbedded.openFile(config, "job.db4o");
-        return container;
-    }
-
-    public void closeConfiguration(ObjectContainer container) {
-        container.close();
+    public JobDAO() {
+        super("job");
     }
 
     public List<Job> readAll(ObjectContainer container) {

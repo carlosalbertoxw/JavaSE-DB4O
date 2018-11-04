@@ -5,10 +5,8 @@
  */
 package dao;
 
-import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
-import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.query.Query;
 import java.util.List;
 import model.Employee;
@@ -17,29 +15,10 @@ import model.Employee;
  *
  * DAO de empleados
  */
-public class EmployeeDAO {
+public class EmployeeDAO extends DAO {
 
-    private static EmployeeDAO singleton;
-
-    public static EmployeeDAO getInstance() {
-        if (singleton == null) {
-            singleton = new EmployeeDAO();
-        }
-        return singleton;
-    }
-
-    private EmployeeDAO() {
-    }
-
-    public ObjectContainer loadConfiguration() {
-        EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
-        config.common().objectClass(Employee.class).cascadeOnDelete(true);
-        ObjectContainer container = Db4oEmbedded.openFile(config, "employee.db4o");
-        return container;
-    }
-
-    public void closeConfiguration(ObjectContainer container) {
-        container.close();
+    public EmployeeDAO() {
+        super("employee");
     }
 
     public List<Employee> readAll(ObjectContainer container) {

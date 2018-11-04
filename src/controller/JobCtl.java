@@ -28,19 +28,9 @@ public class JobCtl implements ActionListener, MouseListener {
     private List<Grade> grades = new ArrayList();
     private JobDAO jobDAO;
     private JobPan jobPan;
-    private Job job;
     private List<Job> jobs = new ArrayList();
-    private static JobCtl singleton;
 
-    public static JobCtl getInstance(MainFrm mainFrm) {
-        singleton = null;
-        if (singleton == null) {
-            singleton = new JobCtl(mainFrm);
-        }
-        return singleton;
-    }
-
-    private JobCtl(MainFrm mainFrm) {
+    public JobCtl(MainFrm mainFrm) {
         Grade grade;
         grade = new Grade();
         grade.setGradeno(1);
@@ -55,12 +45,11 @@ public class JobCtl implements ActionListener, MouseListener {
         grade = new Grade();
         grade.setGradeno(3);
         grade.setDescription("Operativo");
-        grade.setLevel(2);
+        grade.setLevel(3);
         grades.add(grade);
 
-        jobDAO = JobDAO.getInstance();
-        jobPan = JobPan.getInstance(grades);
-        job = new Job();
+        jobDAO = new JobDAO();
+        jobPan = new JobPan(grades);
 
         mainFrm.getContainer().setVisible(false);
         mainFrm.getContainer().removeAll();
@@ -81,6 +70,7 @@ public class JobCtl implements ActionListener, MouseListener {
     }
 
     private void save() {
+        Job job = new Job();
         ObjectContainer container = jobDAO.loadConfiguration();
         int id = 0;
         jobs = jobDAO.readAll(container);
@@ -102,6 +92,7 @@ public class JobCtl implements ActionListener, MouseListener {
     }
 
     private void update() {
+        Job job = new Job();
         if (!jobPan.getTxtJobno().getText().isEmpty()) {
             job.setJobno(Integer.parseInt(jobPan.getTxtJobno().getText()));
             job.setJname(jobPan.getTxtJname().getText());
@@ -173,6 +164,7 @@ public class JobCtl implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Job job = new Job();
         int fila = jobPan.getTblList().getSelectedRow();
         ObjectContainer container = jobDAO.loadConfiguration();
         job = jobDAO.read(container, Integer.parseInt(jobPan.getTblList().getValueAt(fila, 0).toString()));

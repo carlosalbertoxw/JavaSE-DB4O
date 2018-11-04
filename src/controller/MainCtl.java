@@ -29,9 +29,9 @@ public class MainCtl implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("EMPLOYEES")) {
-            EmployeeCtl.getInstance(mainFrm);
+            new EmployeeCtl(mainFrm);
         } else if (e.getActionCommand().equals("JOBS")) {
-            JobCtl.getInstance(mainFrm);
+            new JobCtl(mainFrm);
         }
     }
 

@@ -59,14 +59,7 @@ public class EmployeePan extends JPanel {
     private JScrollPane scrollPane;
     private static EmployeePan singleton;
 
-    public static EmployeePan getInstance(List<Job> jobs, List<Employee> employees, List<Department> departments) {
-        if (singleton == null) {
-            singleton = new EmployeePan(jobs, employees, departments);
-        }
-        return singleton;
-    }
-
-    private EmployeePan(List<Job> jobs, List<Employee> employees, List<Department> departments) {
+    public EmployeePan(List<Job> jobs, List<Employee> employees, List<Department> departments) {
         this.setBackground(Color.WHITE);
         this.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();

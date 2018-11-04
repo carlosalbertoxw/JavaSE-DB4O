@@ -42,14 +42,6 @@ public class JobPan extends JPanel {
     private JTable tblList;
     private DefaultTableModel model;
     private JScrollPane scrollPane;
-    private static JobPan singleton;
-
-    public static JobPan getInstance(List<Grade> grades) {
-        if (singleton == null) {
-            singleton = new JobPan(grades);
-        }
-        return singleton;
-    }
 
     public JobPan(List<Grade> grades) {
         this.setBackground(Color.WHITE);
